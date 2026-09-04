@@ -1,0 +1,89 @@
+/* full-screen title/story card — used for intro, act breaks, outro */
+.scene-title{
+  position:fixed;inset:0;z-index:60;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:radial-gradient(ellipse at center, #2a1a24 0%, #0e0709 100%);
+  text-align:center;padding:20px;
+  cursor:pointer;
+  transition:opacity .6s ease;
+}
+.scene-title .big{
+  font-size:clamp(18px,4vw,32px);
+  color:var(--pink);
+  text-shadow:3px 3px 0 #000;
+  line-height:1.5;
+}
+.scene-title .sub{font-size:15px;color:var(--text-dim);max-width:480px;line-height:1.6;}
+.scene-title .sub .dim{opacity:.7;}
+.scene-title .hint{
+  font-size:12px;color:var(--gold);
+  animation:title-flicker 1.4s infinite;
+}
+@keyframes title-flicker{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+.scene-title.has-gate{cursor:default;}
+
+/* ---------- date/code "lock screen" gate ---------- */
+.gate{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  margin-top:4px;
+}
+.gate-lock{
+  font-size:28px;
+  filter:drop-shadow(2px 2px 0 #000);
+  animation:gate-sway 2.4s ease-in-out infinite;
+}
+@keyframes gate-sway{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}
+
+.gate-label{
+  font-size:11px;color:var(--gold);
+  letter-spacing:.5px;text-shadow:2px 2px 0 #000;
+}
+
+.gate-row{display:flex;gap:8px;}
+
+.gate-input{
+  font-family:var(--font-mono);font-weight:700;font-size:18px;letter-spacing:2px;
+  text-align:center;width:min(200px, 52vw);
+  background:#0e0709;color:var(--text);
+  border:2px solid #59405c;border-bottom:4px solid #221722;
+  padding:10px 8px;
+  outline:none;
+}
+.gate-input::placeholder{color:#5c4a58;letter-spacing:1px;}
+.gate-input:focus{border-color:var(--pink);}
+.gate-input.shake{animation:gate-shake .4s;}
+@keyframes gate-shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-6px);}
+  80%{transform:translateX(6px);}
+}
+
+.gate-btn{
+  font-family:var(--font-pixel);
+  font-size:12px;color:#fff;
+  background:var(--pink-dark);
+  border:2px solid #59405c;border-bottom:4px solid #221722;
+  padding:0 16px;
+  cursor:pointer;
+  transition:transform .06s ease, background .15s ease;
+}
+.gate-btn:hover{background:var(--pink);}
+.gate-btn:active{transform:translateY(2px);border-bottom-width:2px;}
+.gate-btn:disabled{opacity:.5;cursor:default;}
+
+.gate-feedback{min-height:16px;font-size:12px;color:var(--text-dim);}
+.gate-feedback.error{color:#ff6b6b;}
+.gate-feedback.success{color:var(--gold);}
+
+.heart{
+  position:absolute;bottom:-10px;font-size:20px;
+  animation:heart-rise 3.2s ease-in forwards;
+  pointer-events:none;
+}
+@keyframes heart-rise{
+  0%{transform:translateY(0) scale(.8);opacity:1;}
+  100%{transform:translateY(-92vh) scale(1.3) rotate(15deg);opacity:0;}
+}

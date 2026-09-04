@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Dear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/title-scene.css">
+<link rel="stylesheet" href="css/chat-scene.css">
+</head>
+<body>
+
+<div class="crt"></div>
+<div id="app"></div>
+
+<!-- core engine primitives -->
+<script src="js/core/namespace.js"></script>
+<script src="js/core/dom.js"></script>
+<script src="js/core/sfx.js"></script>
+
+<!-- story content — new quests get their own file here, wired into story.js -->
+<script src="js/data/quests/quest1-phone.js"></script>
+<script src="js/data/cards.js"></script>
+<script src="js/data/story.js"></script>
+
+<!-- scene renderers, keyed by type -->
+<script src="js/scenes/titleScene.js"></script>
+<script src="js/scenes/chatScene.js"></script>
+<script src="js/scenes/sceneManager.js"></script>
+
+<!-- boot -->
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+/* ===== design tokens ===== */
+:root{
+  --bg:#150f10;
+  --panel:#1f1620;
+  --panel-2:#271b28;
+  --edge:#0b0709;
+  --pink:#ff7aa2;
+  --pink-dark:#c14f76;
+  --blue:#5865a8;
+  --blue-dark:#333a63;
+  --text:#fdf3f0;
+  --text-dim:#c9b7c2;
+  --gold:#ffd479;
+  --red:#ff5c5c;
+  --green:#8fe37a;
+  --font-pixel:'Press Start 2P', monospace;
+  --font-mono:'JetBrains Mono', monospace;
+}
+
+/* ===== reset ===== */
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;}
+body{
+  font-family:var(--font-mono);
+  color:var(--text);
+  -webkit-font-smoothing:none;
+}
+
+.pixel-title{font-family:var(--font-pixel);}
+
+/* ===== CRT / vignette overlay, sits above every scene ===== */
+.crt{
+  position:fixed;inset:0;pointer-events:none;z-index:50;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%),
+    repeating-linear-gradient(rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 2px, transparent 3px);
+  mix-blend-mode:multiply;
+  opacity:.5;
+}
+
+/* ===== scene mount point ===== */
+/* MD.sceneManager clears and re-fills #app for every scene in the storyline */
+#app{
+  position:relative;
+  width:100vw;height:100vh;
+  transition:opacity .5s ease;
+}
+#app.fade-out{opacity:0;}

@@ -1,0 +1,108 @@
+{
+  "Chat choice (linear)": {
+    "scope": "javascript",
+    "prefix": "choice",
+    "body": [
+      "{",
+      "  text: \"${1:текст Маші}\",",
+      "  reply: \"${2:відповідь Саші}\",",
+      "  delta: ${3:0}",
+      "},$0"
+    ],
+    "description": "Один варіант відповіді: text/reply/delta (для лінійного масиву steps)"
+  },
+
+  "Chat choice (branching, with next)": {
+    "scope": "javascript",
+    "prefix": "choicen",
+    "body": [
+      "{",
+      "  text: \"${1:текст Маші}\",",
+      "  reply: \"${2:відповідь Саші}\",",
+      "  next: \"${3:nodeKey}\",",
+      "  delta: ${4:0}",
+      "},$0"
+    ],
+    "description": "Варіант відповіді з next (для графа-об'єкта steps)"
+  },
+
+  "Chat choice (multi-message text+reply)": {
+    "scope": "javascript",
+    "prefix": "choicef",
+    "body": [
+      "{",
+      "  text: [",
+      "    \"${1:перше повідомлення}\",",
+      "    \"${2:друге повідомлення}\"",
+      "  ],",
+      "  reply: [",
+      "    \"${3:перша відповідь}\",",
+      "    \"${4:друга відповідь}\"",
+      "  ],",
+      "  firstPreview: true,",
+      "  next: \"${5:nodeKey}\",",
+      "  delta: ${6:0}",
+      "},$0"
+    ],
+    "description": "Варіант, де text і reply — кілька повідомлень підряд (кнопка показує тільки перше)"
+  },
+
+  "Chat step (linear, 2 choices)": {
+    "scope": "javascript",
+    "prefix": "step",
+    "body": [
+      "{",
+      "  choices: [",
+      "    {",
+      "      text: \"${1:варіант 1}\",",
+      "      reply: \"${2:відповідь 1}\",",
+      "      delta: ${3:10}",
+      "    },",
+      "    {",
+      "      text: \"${4:варіант 2}\",",
+      "      reply: \"${5:відповідь 2}\",",
+      "      delta: ${6:-10}",
+      "    }",
+      "  ]",
+      "},$0"
+    ],
+    "description": "Повний крок для масиву steps: [{ choices: [...] }]"
+  },
+
+  "Chat node (branching, 2 choices)": {
+    "scope": "javascript",
+    "prefix": "node",
+    "body": [
+      "${1:nodeKey}: {",
+      "  choices: [",
+      "    {",
+      "      text: \"${2:варіант 1}\",",
+      "      reply: \"${3:відповідь 1}\",",
+      "      next: \"${4:nextKey}\",",
+      "      delta: ${5:10}",
+      "    },",
+      "    {",
+      "      text: \"${6:варіант 2}\",",
+      "      reply: \"${7:відповідь 2}\",",
+      "      next: \"${8:nextKey}\",",
+      "      delta: ${9:-10}",
+      "    }",
+      "  ]",
+      "},",
+      "$0"
+    ],
+    "description": "Іменований вузол для графа-об'єкта steps, з порожнім рядком після — як у тебе в файлі"
+  },
+
+  "Message list": {
+    "scope": "javascript",
+    "prefix": "msgs",
+    "body": [
+      "[",
+      "  \"${1:перше}\",",
+      "  \"${2:друге}\"",
+      "]$0"
+    ],
+    "description": "Масив із кількох повідомлень підряд (для text або reply)"
+  }
+}
