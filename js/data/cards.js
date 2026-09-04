@@ -10,7 +10,7 @@ MD.data.cards = {
     hearts: false,
     chimeOnEnter: false,
     gate: {
-      label: 'ВВЕДИ ПАРОЛЬ, через точки если что 😇',
+      label: 'ВВЕДИ ПАРОЛЬ',
       placeholder: 'ДД.ММ.РРРР',
       answer: '04.09.2025',
       hintWrong: 'не тот код... попробуй ещё 🤔',
