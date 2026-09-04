@@ -99,7 +99,7 @@ MD.sceneTypes.chat = function (container, data, onComplete) {
 
   // let the full scene breathe on screen first, then the chat slides in
   // from the right; the "unlock" click lands right as it settles in place.
-  var slideDelay = data.chatSlideDelay != null ? data.chatSlideDelay : 0; // TODO: back to 3000 for the real build
+  var slideDelay = data.chatSlideDelay != null ? data.chatSlideDelay : 3000;
   setTimeout(function () {
     chatPane.classList.add('slide-in');
     setTimeout(function () { MD.sfx.phoneUnlock(); }, 720);
