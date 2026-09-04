@@ -8,6 +8,7 @@
 MD.data.storyline = [
   { type: 'title', data: MD.data.cards.introQuest1 },
   { type: 'chat',  data: MD.data.quests.quest1 },
-  { type: 'title', data: MD.data.cards.outroQuest1 }
+  { type: 'title', data: MD.data.cards.outroQuest1 },
+  { type: 'scroll', data: MD.data.scrollTest } // TODO: тест скрол-сцени, замінити на реальні титри пізніше
   // квест 2 (поцілунок у пивбарі), 3 (набережна), 4 (Троєщина), бос, титри — далі тут
 ];

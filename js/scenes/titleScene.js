@@ -101,14 +101,14 @@ function setupGate(scene, data, finish) {
       MD.sfx.unlock();
       lockIcon.textContent = '🔓';
       feedback.className = 'gate-feedback success';
-      feedback.textContent = gate.hintRight || 'вірно! 💛';
+      feedback.textContent = gate.hintRight || 'верно! 💛';
       input.disabled = true;
       btn.disabled = true;
       setTimeout(finish, 900);
     } else {
       MD.sfx.error();
       feedback.className = 'gate-feedback error';
-      feedback.textContent = gate.hintWrong || 'не той код... спробуй ще';
+      feedback.textContent = gate.hintWrong || 'не тот код... попробуй ещё';
       input.classList.remove('shake');
       void input.offsetWidth; // restart the shake animation on repeat wrong tries
       input.classList.add('shake');

@@ -41,6 +41,7 @@
  */
 MD.sceneTypes.chat = function (container, data, onComplete) {
   var success = typeof data.vibeStart === 'number' ? data.vibeStart : 50;
+  var FAIL_PAUSE = 2200; // ms to sit with the last message on screen before the fail overlay appears
 
   /* ---------- left pane: idle looping background photo ---------- */
   var phonePane = MD.dom.el('div', { class: 'phone-pane' });
@@ -175,7 +176,7 @@ MD.sceneTypes.chat = function (container, data, onComplete) {
       choicesEl.appendChild(btn);
     });
 
-    choicesEl.appendChild(MD.dom.el('div', { class: 'choices-hint' }, ['обери, що написати']));
+    choicesEl.appendChild(MD.dom.el('div', { class: 'choices-hint' }, ['выбери, что написать']));
   }
 
   function handleChoice(choice, dotEl, advance) {
@@ -192,17 +193,18 @@ MD.sceneTypes.chat = function (container, data, onComplete) {
   }
 
   function replyOrFail(choice, advance) {
-    statusEl.textContent = 'друкує...';
+    statusEl.textContent = 'печатает...';
     showTyping();
     setTimeout(function () {
       hideTyping();
 
-      if (success <= 0) {
-        sendBubbleSequence('left', data.failReply || 'Всьо, я офлайн, це занадто 😅', MD.sfx.receive, failQuest);
-        return;
-      }
-
+      // always show the reply actually written for this choice — even the
+      // one that tips the vibe to 0 — instead of swapping in a generic line
       sendBubbleSequence('left', choice.reply, MD.sfx.receive, function () {
+        if (success <= 0) {
+          setTimeout(failQuest, FAIL_PAUSE); // let her read it before the fail screen pops up
+          return;
+        }
         statusEl.textContent = 'онлайн';
         setTimeout(function () { advance(choice); }, 850);
       });
@@ -226,7 +228,7 @@ MD.sceneTypes.chat = function (container, data, onComplete) {
 
     sceneEl.appendChild(MD.dom.el('div', { class: 'fail-overlay' }, [
       MD.dom.el('div', { class: 'fail-title pixel-title' }, ['Все хуйня']),
-      MD.dom.el('div', { class: 'fail-sub' }, [data.failSubtitle || 'занадто токсично навіть для вас двох 😂']),
+      MD.dom.el('div', { class: 'fail-sub' }, [data.failSubtitle || 'слишком токсично даже для вас двоих 😂']),
       retryBtn
     ]));
   }
@@ -234,6 +236,17 @@ MD.sceneTypes.chat = function (container, data, onComplete) {
   function finishScene() {
     clearInterval(frameTimer);
     onComplete();
+  }
+
+  // Reaching the natural end of the story is NOT automatically a win.
+  // Losing is meant to be the easy outcome (vibe hits 0 at any point, from
+  // anywhere) — winning is the narrow case: you also have to have ended up
+  // with a high enough vibe. Falling short at the very end fails you just
+  // like hitting 0 mid-conversation would, same retry flow either way.
+  function completeOrFail() {
+    var threshold = typeof data.winThreshold === 'number' ? data.winThreshold : 80;
+    if (success >= threshold) finishScene();
+    else setTimeout(failQuest, FAIL_PAUSE); // same breathing room before the fail screen here too
   }
 
   /* ---------- entry point: pick linear or branching mode ---------- */
@@ -245,18 +258,18 @@ MD.sceneTypes.chat = function (container, data, onComplete) {
   }
 
   function renderLinearStep(i) {
-    if (i >= data.steps.length) { finishScene(); return; }
+    if (i >= data.steps.length) { completeOrFail(); return; }
     renderChoices(data.steps[i].choices, progressEl.children[i], function () { renderLinearStep(i + 1); });
   }
 
   function renderNode(key) {
     var node = data.steps[key];
-    if (!node) { finishScene(); return; } // unknown/missing node = end of the branch
+    if (!node) { completeOrFail(); return; } // unknown/missing node = end of the branch
     var dot = MD.dom.el('div', { class: 'dot' });
     progressEl.appendChild(dot);
     renderChoices(node.choices, dot, function (choice) {
       if (choice.next) renderNode(choice.next);
-      else finishScene();
+      else completeOrFail();
     });
   }
 };

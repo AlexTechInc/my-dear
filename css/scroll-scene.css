@@ -1,0 +1,103 @@
+/* "scroll" scene: slow bottom-to-top credits-style crawl */
+.scene-scroll{
+  position:fixed;inset:0;
+  background:var(--bg);
+  overflow:hidden;
+  display:flex;justify-content:center;
+  touch-action:none; /* we drive scrolling ourselves via wheel/drag */
+  cursor:grab;
+}
+.scene-scroll:active{cursor:grabbing;}
+
+/* optional background video (YouTube iframe), sits behind the text, blurred/dimmed */
+.scroll-bg{
+  position:fixed;inset:0;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none; /* never let it steal the wheel/drag scroll gestures */
+}
+.scroll-bg-frame{
+  position:absolute;
+  top:50%;left:50%;
+  width:100vw;height:56.25vw;      /* 16:9 */
+  min-height:100vh;min-width:177.78vh; /* 16:9, whichever dimension needs to grow to cover the screen */
+  transform:translate(-50%, -50%) scale(1.15); /* a little oversize so the blur never shows a screen-edge seam */
+  border:0;
+  pointer-events:none;
+  filter:blur(7px) brightness(0.5) saturate(0.9);
+}
+
+.scroll-track{
+  position:absolute;
+  z-index:2;
+  top:100%; /* starts just below the visible screen; JS drives transform from here on */
+  left:50%;
+  transform:translate(-50%, 0);
+  width:min(760px, 92vw);
+  text-align:center;
+  will-change:transform;
+  transition:opacity 1.2s ease;
+}
+.scroll-track.scroll-track-fade{
+  opacity:0;
+}
+
+.scroll-line{
+  font-family:var(--font-mono);
+  font-size:15px;line-height:1.9;
+  color:var(--text-dim);
+  margin:0 0 22px;
+}
+
+.scroll-image{
+  display:block;
+  max-width:100%;
+  margin:40px auto 0;
+  border:0;
+  border-radius:22px;
+  box-shadow:0 14px 44px rgba(0,0,0,.55);
+}
+
+/* applied the moment the scroll stops: reparented to a fixed, viewport-
+   relative element (see scrollScene.js) and grown to fill the screen, then
+   faded away — leaving only the background video + falling hearts/rings */
+.scroll-image.scroll-image-fixed{
+  position:fixed;
+  z-index:4;
+  object-fit:cover;
+  transition:
+    top 3.2s ease-in-out,
+    left 3.2s ease-in-out,
+    width 3.2s ease-in-out,
+    height 3.2s ease-in-out,
+    border-radius 3.2s ease-in-out,
+    opacity 1.8s ease;
+}
+.scroll-image.scroll-image-fixed.scroll-image-dissolve{
+  opacity:0;
+}
+
+.scroll-image-placeholder{
+  height:220px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-pixel);
+  font-size:12px;color:var(--text-dim);
+  border-radius:22px;
+  background:
+    repeating-linear-gradient(45deg, #241a26, #241a26 10px, #2c202f 10px, #2c202f 20px);
+}
+
+/* hearts + rings raining once the scroll stops on the final image */
+.scroll-fall{
+  position:fixed;
+  top:-40px;
+  z-index:5;
+  pointer-events:none;
+  animation-name:scroll-fall-down;
+  animation-timing-function:ease-in;
+  animation-fill-mode:forwards;
+}
+@keyframes scroll-fall-down{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(105vh) rotate(30deg);opacity:.85;}
+}
